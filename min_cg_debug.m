@@ -81,11 +81,10 @@ while norm(g(:,k)) > gtol
     
     
     
-    if norm(g(:,k+1)) <= gtol
+    if norm(g(:,k+1)) < gtol
         disp(['Minimum found after ', num2str(k), ' iterations.'])
         disp('The minnimum is at ')
         disp(x(:,k+1))
-        xmin=x(:,k+1);
         break
     end
     
@@ -102,7 +101,7 @@ while norm(g(:,k)) > gtol
 end
 
 
-xmin=x(:,k);
+xmin=x;
 
 end
 

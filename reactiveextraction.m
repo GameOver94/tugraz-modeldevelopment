@@ -35,14 +35,16 @@ T(i)=T_crit;
 for i=1:40
            
     
-        h=fsolve(@(x)dge(x,T(i),alpha),[x_crit-.2,x_crit+.2]);
+        %h=fsolve(@(x)dge(x,T(i),alpha),[x_crit-.2;x_crit+.2]);
+        %min_cg(fun, x0, gtol, eps, maxiter, rho, delta, mu)
+        h=min_cg(@(x)target(x,T(i),alpha),[x_crit-.2;x_crit+.2], 10^-5, 0.1, 10000, 0.02, 0.5, 0.5);
         x1(i) = h(1);
         x1p(i) = h(2);
         
         temp=T;
          T(i+1) = T(i)-5;
          
-    end
+end
     
    plot(x_crit,T_crit,'b--o',x1,temp,'b--o',x1p,temp,'b--o')
    xlim([0 1]);
@@ -99,23 +101,33 @@ alpha_12 = alpha;%NRTL(6,i);
 tau_12 = tau(T,1);
 tau_21 = tau(T,2);
 
-x_1=x(1);
-x_1p=x(2);
+x_1=x(1,:);
+x_1p=x(2,:);
 
 x_2 = 1-x_1;
 x_2p = 1-x_1p;
 
-F(1) =  x_1* exp(x_2^2*(tau_21*(exp(-2*alpha_12*tau_21))/(x_1+x_2*exp(-alpha_12*tau_21))^2+...
-        tau_12*(exp(-alpha_12*tau_12))/(x_2+x_1*exp(-alpha_12*tau_12))^2))-...
-        x_1p*exp(x_2p^2*(tau_21*(exp(-2*alpha_12*tau_21))/(x_1p+x_2p*exp(-alpha_12*tau_21))^2+...
-        tau_12*(exp(-alpha_12*tau_12))/(x_2p+x_1p*exp(-alpha_12*tau_12))^2));
+F(1,:) =  x_1.* exp(x_2.^2.*(tau_21.*(exp(-2.*alpha_12.*tau_21))./(x_1+x_2.*exp(-alpha_12.*tau_21)).^2+...
+        tau_12.*(exp(-alpha_12.*tau_12))./(x_2+x_1.*exp(-alpha_12.*tau_12)).^2))-...
+        x_1p.*exp(x_2p.^2.*(tau_21.*(exp(-2.*alpha_12.*tau_21))./(x_1p+x_2p.*exp(-alpha_12.*tau_21)).^2+...
+        tau_12.*(exp(-alpha_12.*tau_12))./(x_2p+x_1p.*exp(-alpha_12.*tau_12)).^2));
     
-F(2) = x_2*exp(x_1^2*(tau_12*(exp(-2*alpha_12*tau_12))/(x_2+x_1*exp(-alpha_12*tau_12))^2+...
-        tau_21*(exp(-alpha_12*tau_21))/(x_1+x_2*exp(-alpha_12*tau_21))^2))-...
-        x_2p*exp(x_1p^2*(tau_12*(exp(-2*alpha_12*tau_12))/(x_2p+x_1p*exp(-alpha_12*tau_12))^2+...
-        tau_21*(exp(-alpha_12*tau_21))/(x_1p+x_2p*exp(-alpha_12*tau_21))^2));
+F(2,:) = x_2.*exp(x_1.^2.*(tau_12.*(exp(-2.*alpha_12.*tau_12))./(x_2+x_1.*exp(-alpha_12.*tau_12)).^2+...
+        tau_21.*(exp(-alpha_12.*tau_21))./(x_1+x_2.*exp(-alpha_12.*tau_21)).^2))-...
+        x_2p.*exp(x_1p.^2.*(tau_12.*(exp(-2.*alpha_12.*tau_12))./(x_2p+x_1p.*exp(-alpha_12.*tau_12)).^2+...
+        tau_21.*(exp(-alpha_12.*tau_21))./(x_1p+x_2p.*exp(-alpha_12.*tau_21)).^2));
 
 
 
    end
-   
+
+%% Target function
+
+function t = target(x,T,alpha)
+
+    z = dge(x,T,alpha);
+    z1 = z(1,:);
+    z2 = z(2,:);
+    t = sqrt(z1.^2 + z2.^2);
+
+end

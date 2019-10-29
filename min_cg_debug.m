@@ -34,8 +34,8 @@ xvec_eps4 = xvec + 2.*eye(length(x0))*eps;
 % calculate function values
 fvec_eps1 = fun(xvec_eps1);
 fvec_eps2 = fun(xvec_eps2);
-fvec_eps3 = fun(xvec_eps1);
-fvec_eps4 = fun(xvec_eps2);
+fvec_eps3 = fun(xvec_eps3);
+fvec_eps4 = fun(xvec_eps4);
 
 % Gradient Vektor
 g(:,k) = (fvec_eps1 - 8.*fvec_eps2 + 8.*fvec_eps3 - fvec_eps4) ./ (12*eps);

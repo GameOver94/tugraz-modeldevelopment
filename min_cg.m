@@ -46,7 +46,10 @@ while norm(g(:,k)) > gtol
     
     if k > maxiter
         disp('Maximum nubers of iteration reached')
-        disp(['ABORDED! k= ', num2str(k)])
+        disp(['ABORDED! k = ', num2str(k)])
+        disp(['Accuracy = ', num2str(norm(g(:,k)))])
+        disp(' ')
+        xmin=x(:,k);
         break
     end
     
@@ -57,7 +60,7 @@ while norm(g(:,k)) > gtol
     i = 1;
     
     alpha(k) = rho^i;       % Armijo
-    %alpha(k) = 5;         % Backtracking
+    %alpha(k) = 0.01;         % Backtracking
     
     while fun(x(:,k)+alpha(k)*d(:,k)) > fun(x(:,k))-delta*alpha(k)^2*norm(d(:,k))^2
         i=i+1;
@@ -128,8 +131,11 @@ g(:,k+1) = (fvec_eps1 - 8.*fvec_eps2 + 8.*fvec_eps3 - fvec_eps4) ./ (12*eps);
     
 end
 
+if isnan(x(:,k))
+    disp('ERROR NAN')
+end
 
-xmin=x(:,k);
+%xmin=x(:,k);
 
 end
 

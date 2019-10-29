@@ -37,7 +37,7 @@ for i=1:40
     
         %h=fsolve(@(x)dge(x,T(i),alpha),[x_crit-.2;x_crit+.2]);
         %min_cg(fun, x0, gtol, eps, maxiter, rho, delta, mu)
-        h=min_cg(@(x)target(x,T(i),alpha),[x_crit-.2;x_crit+.2], 10^-5, 0.1, 10000, 0.02, 0.5, 0.5);
+        h=min_cg(@(x)target(x,T(i),alpha),[x_crit-.2;x_crit+.2], 10^-7, 0.0001, 100000, 0.6, 0.01, 0.1);
         x1(i) = h(1);
         x1p(i) = h(2);
         
@@ -128,6 +128,6 @@ function t = target(x,T,alpha)
     z = dge(x,T,alpha);
     z1 = z(1,:);
     z2 = z(2,:);
-    t = sqrt(z1.^2 + z2.^2);
+    t = z1.^2 + z2.^2;
 
 end

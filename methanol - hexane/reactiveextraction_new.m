@@ -20,7 +20,9 @@ options = optimoptions('fsolve','StepTolerance',1e-10);
 %% calculation LLE
 
 % critical Temperatur and composition
-c=fsolve(@(x)critVal(x,alpha),[0.1,283]);
+%min_cg(fun, x0, gtol, eps, maxiter, rho, delta, mu)
+%c=fsolve(@(x)critVal(x,alpha),[0.1;283]);
+c=min_cg_new(@(x)target_crit(x,alpha),[0.5;283],10^-8, 10^-6, 10^6, 0.2, 10^-2, 10^-1);
 
 T_crit = c(2);
 x_crit = c(1);
@@ -55,7 +57,7 @@ for i=1:100
            
         %h=fsolve(@(x)dge(x,T(i),alpha),[x1_init(i);x1p_init(i)]);
         %min_cg(fun, x0, gtol, eps, maxiter, rho, delta, mu)
-        h=min_cg_new(@(x)target(x,T(i),alpha),[x1_init(i);x1p_init(i)], 10^-7, 10^-5, 10^6, rho, 10^-2, 10^-1); % initial values !!
+        h=min_cg_new(@(x)target(x,T(i),alpha),[x1_init(i);x1p_init(i)], 10^-5, 10^-5, 10^6, rho, 10^-2, 10^-1); % initial values !!
         x1(i) = h(1);
         x1p(i) = h(2);
         
@@ -104,7 +106,7 @@ elseif i==2 %parameter ji
    
 end
 
-tij = A+B/T+C*log(T)+D*T;
+tij = A+B./T+C*log(T)+D.*T;
    end
 
    %% critical temperature and composition
@@ -115,15 +117,15 @@ tij = A+B/T+C*log(T)+D*T;
 
 alpha_12=alpha;%NRTL(6,i);
 
-tau_12 = tau(x(2),1); 
-tau_21 = tau(x(2),2);
-x1 = x(1);
+tau_12 = tau(x(2,:),1); 
+tau_21 = tau(x(2,:),2);
+x1 = x(1,:);
 
 % first and second derivative equals 0
 % the first one is from henri el al
 % the second via symbolyc derication in Matlab
-F(1,1) = -1.0./(x1-1.0)+1.0./x1-tau_12.*exp(alpha_12.*tau_12.*-2.0).*1.0./(-x1+x1.*exp(-alpha_12.*tau_12)+1.0).^3.*2.0-tau_21.*exp(alpha_12.*tau_21.*-2.0).*1.0./(x1-exp(-alpha_12.*tau_21).*(x1-1.0)).^3.*2.0;
-F(2,1) = 1.0./(x1-1.0).^2-1.0./x1.^2+tau_12.*exp(alpha_12.*tau_12.*-2.0).*(exp(-alpha_12.*tau_12)-1.0).*1.0./(-x1+x1.*exp(-alpha_12.*tau_12)+1.0).^4.*6.0-tau_21.*exp(alpha_12.*tau_21.*-2.0).*1.0./(x1-exp(-alpha_12.*tau_21).*(x1-1.0)).^4.*(exp(-alpha_12.*tau_21)-1.0).*6.0;
+F(1,:) = -1.0./(x1-1.0)+1.0./x1-tau_12.*exp(alpha_12.*tau_12.*-2.0).*1.0./(-x1+x1.*exp(-alpha_12.*tau_12)+1.0).^3.*2.0-tau_21.*exp(alpha_12.*tau_21.*-2.0).*1.0./(x1-exp(-alpha_12.*tau_21).*(x1-1.0)).^3.*2.0;
+F(2,:) = 1.0./(x1-1.0).^2-1.0./x1.^2+tau_12.*exp(alpha_12.*tau_12.*-2.0).*(exp(-alpha_12.*tau_12)-1.0).*1.0./(-x1+x1.*exp(-alpha_12.*tau_12)+1.0).^4.*6.0-tau_21.*exp(alpha_12.*tau_21.*-2.0).*1.0./(x1-exp(-alpha_12.*tau_21).*(x1-1.0)).^4.*(exp(-alpha_12.*tau_21)-1.0).*6.0;
 end
 
    %% LLE equilibrium
@@ -160,6 +162,15 @@ F(2,:) = x_2.*exp(x_1.^2.*(tau_12.*(exp(-2.*alpha_12.*tau_12))./(x_2+x_1.*exp(-a
 function t = target(x,T,alpha)
 
     z = dge(x,T,alpha);
+    z1 = z(1,:);
+    z2 = z(2,:);
+    t = z1.^2 + z2.^2;
+
+end
+
+function t = target_crit(x,alpha)
+
+    z = critVal(x,alpha);
     z1 = z(1,:);
     z2 = z(2,:);
     t = z1.^2 + z2.^2;

@@ -46,5 +46,5 @@ switch i
         error('no valid argument')
 end
 
-tij = A+B/T+E*log(T)+F*T;
+tij = A+B./T+E.*log(T)+F.*T;
 end

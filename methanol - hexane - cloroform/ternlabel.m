@@ -15,9 +15,9 @@
 % Modifiers
 
 function h = ternlabel(A, B, C)
-r(1) = text(0.5, -0.05, A, 'horizontalalignment', 'center');
-r(2) = text(1-0.45*sin(deg2rad(30)), 0.5, B, 'rotation', -60, 'horizontalalignment', 'center');
-r(3) = text(0.45*sin(deg2rad(30)), 0.5, C, 'rotation', 60, 'horizontalalignment', 'center');
+r(1) = text(0.5, -0.05, A, 'horizontalalignment', 'center','FontSize',12);
+r(2) = text(1-0.4*sin(deg2rad(30)), 0.5, B, 'rotation', -60, 'horizontalalignment', 'center','FontSize',12);
+r(3) = text(0.4*sin(deg2rad(30)), 0.5, C, 'rotation', 60, 'horizontalalignment', 'center','FontSize',12);
 
 if nargout > 0
     h = r;

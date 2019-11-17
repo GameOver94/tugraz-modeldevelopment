@@ -9,13 +9,13 @@ function tij = tau(T,i)
 switch i
     case 13 %parameter 13
         A=0;%NRTL(2,j);
-        B=--154.502;%NRTL(4,j); %3407.1*4.2/8.314;
+        B=-154.502;%NRTL(4,j); %3407.1*4.2/8.314;
         E=0;
         F=0;
         
     case 31 %parameter 31
         A=0;%NRTL(3,j);
-        B= 360.657;%NRTL(5,j); %1662*4.2/8.314;
+        B=360.657;%NRTL(5,j); %1662*4.2/8.314;
         E=0;
         F=0;
         

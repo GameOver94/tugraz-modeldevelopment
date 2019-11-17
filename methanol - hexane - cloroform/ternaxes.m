@@ -21,7 +21,8 @@ if nargin < 1
 end
 
 % TODO: Handle these as options
-direction = 'clockwise';
+%direction = 'clockwise';
+direction = 'counter-clockwise';
 percentage = false;
 
 %TODO: Get a better way of offsetting the labels

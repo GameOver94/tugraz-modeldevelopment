@@ -30,6 +30,7 @@ end
 
 direction = 'clockwise';
 
+
 if ~strcmp(direction, 'clockwise')
     y = fB*sin(deg2rad(60));
     x = fA + y*cot(deg2rad(60));

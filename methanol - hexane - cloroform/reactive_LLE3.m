@@ -9,6 +9,9 @@
 % comp2: Methanol
 % comp3: Chloroform
 
+% phase 1 : a
+% pahse 2 : b
+
 
 clear variables; 
 clc;
@@ -39,10 +42,10 @@ x_1a(1) = 0.2;
 x_1b(1) = 0.75;
 x_3b(1) = 0;
 
-T_calc = 297.15;
+T_calc = 298.15;
 rho = 0.3;
 
-for i=1:33
+for i=1:32
         if i==1   
         %h=fsolve(@(x)dge3(x,T_calc,x_3a(i)),[x_1a(i);x_1b(i);x_3b(i)],options); % starting values for x1', x1'',x3''
         h=min_cg_new(@(x)target(x,T_calc,x_3a(i)),[x_1a(i);x_1b(i);x_3b(i)], 10^-7, 10^-5, 10^6, rho, 10^-2, 10^-1);
@@ -86,14 +89,14 @@ end
 %         /    \
 %   hexane --- methanol
    
-    ternplot(x_1a,x_2a,x_3a, 'r.-', 'majors', 10); 
+    ternplot(x_2a,x_3a,x_1a, 'r.-', 'majors', 10); 
     hold on
-    ternplot(x_1b,x_2b,x_3b, 'b.-', 'majors', 10);
+    ternplot(x_2b,x_3b,x_1b, 'b.-', 'majors', 10);
     
-    ternplot(X,Y,Z, 'go-');
+    ternplot(Y,Z,X, 'go-');
     
     title('Ternary Diagram from Hexane-Methanol-Chloroform at 25°C', 'Position',[0.1 0.9])
-    ternlabel('hexane','menthol','chloroform'); 
+    ternlabel('menthol','chloroform','hexane'); 
     legend('Phase I', 'Phase II', 'Tie Lines')
    
 %% Target function 

@@ -28,7 +28,8 @@ if nargin < 3
     fC = 1 - (fA + fB);
 end
 
-direction = 'clockwise';
+%direction = 'clockwise';
+direction = 'counter-clockwise';
 
 
 if ~strcmp(direction, 'clockwise')

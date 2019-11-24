@@ -110,10 +110,10 @@ F(1,:) = x_1p.*exp(ln_gamma_1p)-x_1dp.*exp(ln_gamma_1dp);
 F(2,:) = x_2p.*exp(ln_gamma_2p)-x_2dp.*exp(ln_gamma_2dp);
 
 if length(x) == 3
-    F(3,:) = x_3p.*exp(ln_gamma_3p)-x_3dp.*exp(ln_gamma_3dp);
-    K = 2;
+    %F(3,:) = x_3p.*exp(ln_gamma_3p)-x_3dp.*exp(ln_gamma_3dp);
+    K = 4;
     %F(3,:) = K.*(x_1p.*exp(ln_gamma_1p).*x_2p.*exp(ln_gamma_2p))-(x_3dp.*exp(ln_gamma_3dp));
-    %F(3,:) = x_2p.*exp(ln_gamma_2p)./(K.*x_1p.*exp(ln_gamma_1p))-(x_3dp.*exp(ln_gamma_3dp));
+    F(3,:) = x_2p.*exp(ln_gamma_2p)./(K.*x_1p.*exp(ln_gamma_1p))-(x_3dp.*exp(ln_gamma_3dp));
 end
 
 end

@@ -24,9 +24,9 @@ options = optimoptions('fsolve','StepTolerance',1e-10);
 % critical Temperatur and composition for the binary system 
 alpha12 = 0.2;
 
-%c=fsolve(@(x)critVal(x,alpha12),[0.1;283],options);
+c=fsolve(@(x)critVal(x,alpha12),[0.1;283],options);
 %min_cg(fun, x0, gtol, eps, maxiter, rho, delta, mu)
-c=min_cg_new(@(x)target_crit(x,alpha12),[0.5;283],10^-8, 10^-6, 10^6, 0.2, 10^-2, 10^-1);
+%c=min_cg_new(@(x)target_crit(x,alpha12),[0.5;283],10^-8, 10^-6, 10^6, 0.2, 10^-2, 10^-1);
 
 T_crit = c(2);
 x_crit = c(1);
@@ -38,14 +38,14 @@ x_crit = c(1);
 x_3a(1) = 0; % one x has to be define in order to solve the equations
 
 % initial values
-x_1a(1) = 0.2;
-x_1b(1) = 0.75;
+x_1a(1) = 0.9;
+x_1b(1) = 0.5;
 x_3b(1) = 0;
 
 T_calc = 298.15;
 rho = 0.3;
 
-for i=1:32
+for i=1:50
         if i==1   
         h=fsolve(@(x)dge3(x,T_calc,x_3a(i)),[x_1a(i);x_1b(i);x_3b(i)],options); % starting values for x1', x1'',x3''
         %h=min_cg_new(@(x)target(x,T_calc,x_3a(i)),[x_1a(i);x_1b(i);x_3b(i)], 10^-7, 10^-5, 10^6, rho, 10^-2, 10^-1);

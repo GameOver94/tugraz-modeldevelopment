@@ -1,5 +1,5 @@
 
-function F=dge3(x,T,x_3p)
+function F=dge3(x,T,x_1p)
 
 % x1' or one molefraction has to be specified
 
@@ -22,14 +22,9 @@ tau_32 = tau(T,32);
 
 
 % definition of the 3 variabes
-x_1p = x(1,:);
-x_1dp = x(2,:);
-
-if length(x) == 3
-    x_3dp  = x(3,:);
-else
-    x_3dp = 0;
-end
+x_1dp = x(1,:);
+x_3p = x(2,:);
+x_3dp  = x(3,:);
 
 
 % elimination of the other variables with standardization operation

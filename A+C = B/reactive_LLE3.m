@@ -25,9 +25,9 @@ options = optimoptions('fsolve','StepTolerance',1e-10);
 % critical Temperatur and composition for the binary system 
 alpha12 = 0.2;
 
-c=fsolve(@(x)critVal(x,alpha12),[0.1;283],options);
+%c=fsolve(@(x)critVal(x,alpha12),[0.1;283],options);
 %min_cg(fun, x0, gtol, eps, maxiter, rho, delta, mu)
-%c=min_cg_new(@(x)target_crit(x,alpha12),[0.5;283],10^-8, 10^-6, 10^6, 0.2, 10^-2, 10^-1);
+c=min_cg_new(@(x)target_crit(x,alpha12),[0.5;283],10^-8, 10^-6, 10^6, 0.2, 10^-2, 10^-1);
 
 T_crit = c(2);
 x_crit = c(1);
@@ -48,8 +48,8 @@ rho = 0.5;
 
 for i=1:60
         if i==1   
-        h=fsolve(@(x)dge3(x,T_calc,x_1a(i)),[x_1b(i);x_3a(i);x_3b(i)],options);
-        %h=min_cg_new(@(x)target(x,T_calc,x_1a(i)),[x_1b(i);x_3a(i);x_3b(i)], 10^-7, 10^-5, 10^6, rho, 10^-2, 10^-1);
+        %h=fsolve(@(x)dge3(x,T_calc,x_1a(i)),[x_1b(i);x_3a(i);x_3b(i)],options);
+        h=min_cg_new(@(x)target(x,T_calc,x_1a(i)),[x_1b(i);x_3a(i);x_3b(i)], 10^-7, 10^-5, 10^6, rho, 10^-2, 10^-1);
         else
             %h=fsolve(@(x)dge3(x,T_calc,x_1a(i)),[x_1b(i-1);x_3a(i-1);x_3b(i-1)],options);
             h=min_cg_new(@(x)target(x,T_calc,x_1a(i)),[0.4;x_3a(i-1);x_3b(i-1)], 10^-7, 10^-5, 10^6, rho, 10^-2, 10^-1);

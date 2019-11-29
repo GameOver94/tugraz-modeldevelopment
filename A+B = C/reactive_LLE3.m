@@ -42,8 +42,12 @@ x_crit = c(1);
 % initial values
 x_1a(1) = 0.8;
 x_1b(1) = 0.2;
-x_3b(1) = 0;
 x_3a(1) = 0;
+x_3b(1) = 0;
+
+phi(1) = 0.1;
+x_1(1) = 0.7;
+
 
 K(1) = 0;
 i = 1;
@@ -53,11 +57,11 @@ rho = 0.3;
 
 for i=1:60
     if i==1         
-        %h=fsolve(@(x)dge3(x,T_calc,K(i)),[x_1a(i);x_1b(i);x_3b(i);x_3a(i)],options); % starting values for x1', x1'',x3''
-        h=min_cg_new(@(x)target(x,T_calc,K(i)),[x_1a(i);x_1b(i);x_3b(i);x_3a(i)], 10^-7, 10^-5, 10^6, rho, 10^-2, 10^-1);
+        h=fsolve(@(x)dge3(x,T_calc,K(i)),[x_1a(i);x_1b(i);x_3a(i);x_3b(i);phi(i);x_1(i)],options); % starting values for x1', x1'',x3''
+        %h=min_cg_new(@(x)target(x,T_calc,K(i)),[x_1a(i);x_1b(i);x_3b(i);x_3a(i)], 10^-7, 10^-5, 10^6, rho, 10^-2, 10^-1);
     else
-        %h=fsolve(@(x)dge3(x,T_calc,K(i)),[x_1a(i-1);x_1b(i-1);x_3b(i-1);x_3a(i-1)],options); % starting values for x1', x1'',x3''
-        h=min_cg_new(@(x)target(x,T_calc,K(i)),[x_1a(i-1);x_1b(i-1);x_3b(i-1);x_3a(i-1)], 10^-7, 10^-5, 10^6, rho, 10^-2, 10^-1);
+        h=fsolve(@(x)dge3(x,T_calc,K(i)),[x_1a(i-1);x_1b(i-1);x_3a(i-1);x_3b(i-1);phi(i-1);x_1(i-1)],options); % starting values for x1', x1'',x3''
+        %h=min_cg_new(@(x)target(x,T_calc,K(i)),[x_1a(i-1);x_1b(i-1);x_3b(i-1);x_3a(i-1)], 10^-7, 10^-5, 10^6, rho, 10^-2, 10^-1);
     end
     
     if abs(h(1)-h(2))<0.01
@@ -67,8 +71,12 @@ for i=1:60
     
     x_1a(i) = h(1);
     x_1b(i) = h(2);
-    x_3b(i) = h(3);
-    x_3a(i) = h(4);
+    x_3a(i) = h(3);
+    x_3b(i) = h(4);
+    
+    phi(i) = h(5);
+    x_1(i) = h(6);
+    %x_2(i) = h(7);
 
     x_2a(i) = 1-x_1a(i)-x_3a(i);
     x_2b(i) = 1-x_1b(i)-x_3b(i);
@@ -102,6 +110,9 @@ end
     title('Ternary Diagram from Hexane-Methanol-Chloroform at 25°C', 'Position',[0.1 0.9])
     ternlabel('B','C','A'); 
     legend('Phase I', 'Phase II', 'Tie Lines')
+    
+    
+    ternplot(x_1*0.4,(1-x_1-x_1*0.4),x_1,'-o')
    
 %% Target function 
     

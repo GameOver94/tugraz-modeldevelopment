@@ -23,9 +23,14 @@ x_1dp = x(2,:);
 
 if length(x) == 3
     x_3dp  = x(3,:);
-elseif length(x) == 4
-    x_3dp  = x(3,:);
-    x_3p = x(4,:);
+elseif length(x) == 6
+    x_3p = x(3,:);
+    x_3dp  = x(4,:);
+    
+    
+    phi = x(5,:);
+    x_1 = x(6,:);
+    %x_2 = x(7,:);
 else
     x_3dp = 0;
 end
@@ -112,9 +117,16 @@ if length(x) == 3
     F(3,:) = x_3p.*exp(ln_gamma_3p)-x_3dp.*exp(ln_gamma_3dp);
 end
 
-if length(x) == 4
+if length(x) == 6
     F(3,:) = x_3p.*exp(ln_gamma_3p)-x_3dp.*exp(ln_gamma_3dp);
-    F(4,:) = x_3p.*exp(ln_gamma_3p)./(x_1p.*exp(ln_gamma_1p).*x_2p.*exp(ln_gamma_2p))-K;
+    
+    %F(4,:) = phi.*x_1p+(1-phi)*x_1dp-x_1;
+    %F(5,:) = phi.*x_2p+(1-phi)*x_2dp-x_2;
+    
+    F(4,:) = phi.*x_1p+(1-phi)*x_1dp-x_1;
+    F(5,:) = phi.*x_2p+(1-phi)*x_2dp-x_1*0.4;
+    
+    F(6,:) = x_3p.*exp(ln_gamma_3p)./(x_1p.*exp(ln_gamma_1p).*x_2p.*exp(ln_gamma_2p))-K;
 end
 
 end

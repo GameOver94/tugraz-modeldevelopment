@@ -1,5 +1,5 @@
 
-function F=dge3(x,T,K)
+function F=dge3(x,T,K,phi_F)
 
 % x1' or one molefraction has to be specified
 
@@ -30,7 +30,6 @@ elseif length(x) == 6
     
     phi = x(5,:);
     x_1 = x(6,:);
-    %x_2 = x(7,:);
 else
     x_3dp = 0;
 end
@@ -119,12 +118,9 @@ end
 
 if length(x) == 6
     F(3,:) = x_3p.*exp(ln_gamma_3p)-x_3dp.*exp(ln_gamma_3dp);
-    
-    %F(4,:) = phi.*x_1p+(1-phi)*x_1dp-x_1;
-    %F(5,:) = phi.*x_2p+(1-phi)*x_2dp-x_2;
-    
-    F(4,:) = phi.*x_1p+(1-phi)*x_1dp-x_1;
-    F(5,:) = phi.*x_2p+(1-phi)*x_2dp-x_1*0.4;
+       
+    F(4,:) = phi.*x_1p+(1-phi).*x_1dp-x_1;
+    F(5,:) = phi.*x_2p+(1-phi).*x_2dp-x_1./phi_F;
     
     F(6,:) = x_3p.*exp(ln_gamma_3p)./(x_1p.*exp(ln_gamma_1p).*x_2p.*exp(ln_gamma_2p))-K;
 end

@@ -18,7 +18,7 @@
 clear variables; 
 clc;
 close all;
-format long;
+%format long;
 options = optimoptions('fsolve','StepTolerance',1e-10);
 %%
 %% calculation LLE
@@ -38,33 +38,41 @@ x_crit = c(1);
 
 %% LLE diagram ternary system
 
+% ratio of the Feed
+phi_F = 1.5;
 
 % initial values
 x_1a(1) = 0.8;
-x_1b(1) = 0.2;
+x_1b(1) = 0.3;
 x_3a(1) = 0;
 x_3b(1) = 0;
 
-phi(1) = 0.1;
-x_1(1) = 0.7;
+phi(1) = 0.7;
+x_1(1) = phi_F/(1+phi_F);
 
 
 K(1) = 0;
 i = 1;
 
 T_calc = 298.15;
-rho = 0.3;
+rho = 0.5;
 
-for i=1:60
+for i=1:40
     if i==1         
-        h=fsolve(@(x)dge3(x,T_calc,K(i)),[x_1a(i);x_1b(i);x_3a(i);x_3b(i);phi(i);x_1(i)],options); % starting values for x1', x1'',x3''
-        %h=min_cg_new(@(x)target(x,T_calc,K(i)),[x_1a(i);x_1b(i);x_3b(i);x_3a(i)], 10^-7, 10^-5, 10^6, rho, 10^-2, 10^-1);
+        %h=fsolve(@(x)dge3(x,T_calc,K(i),phi_F),[x_1a(i);x_1b(i);x_3a(i);x_3b(i);phi(i);x_1(i)],options); % starting values for x1', x1'',x3''
+        h=min_cg_new(@(x)target(x,T_calc,K(i),phi_F),[x_1a(i);x_1b(i);x_3a(i);x_3b(i);phi(i);x_1(i)], 10^-7, 10^-5, 10^6, rho, 10^-2, 10^-1);
     else
-        h=fsolve(@(x)dge3(x,T_calc,K(i)),[x_1a(i-1);x_1b(i-1);x_3a(i-1);x_3b(i-1);phi(i-1);x_1(i-1)],options); % starting values for x1', x1'',x3''
-        %h=min_cg_new(@(x)target(x,T_calc,K(i)),[x_1a(i-1);x_1b(i-1);x_3b(i-1);x_3a(i-1)], 10^-7, 10^-5, 10^6, rho, 10^-2, 10^-1);
+        %h=fsolve(@(x)dge3(x,T_calc,K(i),phi_F),[x_1a(i-1);x_1b(i-1);x_3a(i-1);x_3b(i-1);phi(i-1);x_1(i-1)],options); % starting values for x1', x1'',x3''
+        h=min_cg_new(@(x)target(x,T_calc,K(i),phi_F),[x_1a(i-1);x_1b(i-1);x_3a(i-1);x_3b(i-1);phi(i-1);x_1(i-1)], 10^-7, 10^-5, 10^6, rho, 10^-2, 10^-1);
     end
     
-    if abs(h(1)-h(2))<0.01
+    
+%     if abs(h(1)-h(2))<0.01
+%         disp(i)
+%         break
+%     end
+    
+    if or(h(5)<0,h(5)>1)
         disp(i)
         break
     end
@@ -112,18 +120,20 @@ end
     legend('Phase I', 'Phase II', 'Tie Lines')
     
     
-    ternplot(x_1*0.4,(1-x_1-x_1*0.4),x_1,'-o')
+    ternplot(x_1/phi_F,(1-x_1-x_1/phi_F),x_1,'-o')
    
 %% Target function 
     
-function t = target(x,T,K)
+function t = target(x,T,K,phi_F)
 
-    z = dge3(x,T,K);
+    z = dge3(x,T,K,phi_F);
     z1 = z(1,:);
     z2 = z(2,:);
     z3 = z(3,:);
     z4 = z(4,:);
-    t = z1.^2 + z2.^2 + z3.^2 + z4.^2;
+    z5 = z(5,:);
+    z6 = z(6,:);
+    t = z1.^2 + z2.^2 + z3.^2 + z4.^2 + z5.^2 + z6.^2;
 
 end
 

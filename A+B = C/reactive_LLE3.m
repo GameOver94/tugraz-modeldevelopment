@@ -20,7 +20,8 @@ clc;
 close all;
 %format long;
 options = optimoptions('fsolve','StepTolerance',1e-10);
-%%
+
+
 %% calculation LLE
 
 % critical Temperatur and composition for the binary system 
@@ -52,7 +53,6 @@ x_1(1) = phi_F/(1+phi_F);
 
 
 K(1) = 0;
-i = 1;
 
 T_calc = 298.15;
 rho = 0.5;

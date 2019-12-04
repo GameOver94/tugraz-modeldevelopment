@@ -163,6 +163,8 @@ Z = [x_3a(1:3:end);x_3b(1:3:end)];
 ternplot(Y,Z,X, 'go-');
 ternplot(x_1/phi_F,(1-x_1-x_1/phi_F),x_1,'s','MarkerSize',10,'MarkerEdgeColor','red','MarkerFaceColor',[1 .6 .6])
 legend('Phase I', 'Phase II', 'Tie Lines','crit. K')
+[xpos,ypos] = terncoords(x_1/phi_F,(1-x_1-x_1/phi_F),x_1);
+text(xpos - 0.15,ypos,['K = ',num2str(K_crit)],'Color','red','FontSize',12);
 
 
 %% Calculate progression of Reaction

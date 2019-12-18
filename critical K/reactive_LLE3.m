@@ -88,7 +88,7 @@ end
     hold on
     ternplot(x_2b,x_3b,x_1b, 'b.-', 'majors', 10);
     
-    title('Ternary Diagram from Hexane-Methanol-Chloroform at 25°C', 'Position',[0.1 0.9])
+    title('ABC', 'Position',[0.1 0.9])
     ternlabel('B','C','A'); 
     legend('Phase I', 'Phase II')
   

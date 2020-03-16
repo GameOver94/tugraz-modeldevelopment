@@ -7,7 +7,7 @@ format long
 %A Modified Sufficient Descent Polak–Ribiére–Polyak Type Conjugate Gradient Method for Unconstrained Optimization Problems
 
 % Values for Contour Plot
-[x,y] = meshgrid(-5:0.1:5,-5:0.1:5);
+[x,y] = meshgrid(-3:0.1:3,-3:0.1:3);
 %z = func1({x,y});
 z = ackley1({x,y});
 

@@ -1,0 +1,5 @@
+Main programs:
+*) binary_LLE_MetOH_Hex
+*) ternary_LLE_MetOH_Hex_Chloroform.m
+*) ternary_RLLE_given_critKavalue
+*) ternary_RLLE_calc_critKavalue.m
